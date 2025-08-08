@@ -4,7 +4,7 @@
  */
 {
 	"$schema": "node_modules/wrangler/config-schema.json",
-	"name": "htb-blogd1imgpages-250520a1143-js-nu-cfpages",
+	"name": "blog-cfpages",
 	"compatibility_date": "2025-05-20",
 	"pages_build_output_dir": "./dist",
 	"observability": {
@@ -14,7 +14,7 @@
 		{
 		  "binding": "DB",
 		  "database_name": "htbblogd1imgpgdb250520",
-		  "database_id": "fb333800-c8fe-41f9-94fb-0101ccc2a311"
+		  "database_id": "c974d0cd-b772-489d-8039-23fb0669d01d"
 		}
 	  ]
 	/**

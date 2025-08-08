@@ -36,7 +36,7 @@ const isMobileMenuOpen = ref(false);
     <nav class="bg-gradient-to-r from-blue-500 to-blue-700 text-white p-4">
       <div class="container mx-auto flex justify-between items-center">
         <div class="flex items-center">
-          <a href="/" class="text-xl font-bold">HitTechBlogV2</a>
+          <a href="/" class="text-xl font-bold">Blog</a>
         </div>
         <div class="md:hidden">
           <button @click="isMobileMenuOpen = !isMobileMenuOpen" class="text-white focus:outline-none">

@@ -23,11 +23,8 @@
               </button>
             </li>
             <li>
-              <button 
-                @click="$router.push('/docpg')" 
-                class="px-4 py-2 bg-white/20 hover:bg-white/30 text-white rounded-lg shadow-md transition-colors"
-              >
-                About
+              <button @click="$router.push('/createpg')" class="px-4 py-2 bg-white/20 hover:bg-white/30 text-white rounded-lg shadow-md transition-colors" >
+                Publish
               </button>
             </li>
             <li>
@@ -207,11 +204,11 @@
           </ul> -->
           <h3 class="text-xl font-semibold mb-3 mt-6">Selected Useful Links</h3>
           <ul class="list-none p-0">
-            <li class="mb-1"><a :href="runtimeConfig.public.LINK1URL || '#null'" class="text-blue-600 hover:text-blue-800">{{ runtimeConfig.public.LINK1LABEL || 'LINK1LABEL'}} </a></li>
+            <!-- <li class="mb-1"><a :href="runtimeConfig.public.LINK1URL || '#null'" class="text-blue-600 hover:text-blue-800">{{ runtimeConfig.public.LINK1LABEL || 'LINK1LABEL'}} </a></li>
             <li class="mb-1"><a :href="runtimeConfig.public.LINK2URL || '#null'" class="text-blue-600 hover:text-blue-800">{{ runtimeConfig.public.LINK2LABEL || 'LINK2LABEL'}}</a></li>
             <li class="mb-1"><a :href="runtimeConfig.public.LINK3URL || '#null'" class="text-blue-600 hover:text-blue-800">{{ runtimeConfig.public.LINK3LABEL || 'LINK3LABEL'}}</a></li>
             <li class="mb-1"><a :href="runtimeConfig.public.LINK4URL || '#null'" class="text-blue-600 hover:text-blue-800">{{ runtimeConfig.public.LINK4LABEL || 'LINK4LABEL'}}</a></li>
-            <li class="mb-1"><a :href="runtimeConfig.public.LINK5URL || '#null'" class="text-blue-600 hover:text-blue-800">{{ runtimeConfig.public.LINK5LABEL || 'LINK5LABEL'}}</a></li>
+            <li class="mb-1"><a :href="runtimeConfig.public.LINK5URL || '#null'" class="text-blue-600 hover:text-blue-800">{{ runtimeConfig.public.LINK5LABEL || 'LINK5LABEL'}}</a></li> -->
             <!-- <li class="mb-1"><a href="#" class="text-blue-600 hover:text-blue-800">GitHub</a></li>
             <li class="mb-1"><a href="#" class="text-blue-600 hover:text-blue-800">GitHub</a></li> -->
           </ul>

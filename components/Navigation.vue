@@ -2,20 +2,20 @@
   <nav class="bg-blue-800 text-white p-4">
     <div class="container mx-auto flex justify-between items-center">
       <div class="flex items-center">
-        <a href="/" class="text-xl font-bold">HitTechBlog</a>
+        <a href="/" class="text-xl font-bold">Blog</a>
       </div>
       <div class="flex items-center">
         <ul class="flex space-x-4 mr-6">
           <li v-if="shouldShowButton('Home')">
             <a class="text-white hover:text-gray-200" href="/">Home</a>
           </li>
-          <li v-if="shouldShowButton('About')">
-            <a class="text-white hover:text-gray-200" href="/docpg">About</a>
-          </li>
           <li v-if="shouldShowButton('Posts')">
             <a class="text-white hover:text-gray-200" href="/posts">Posts</a>
           </li>
           <ClientOnly>
+            <li v-if="isLoggedIn && shouldShowButton('Publish')">
+              <a class="text-white hover:text-gray-200" href="/createpg">Publish</a>
+            </li>
             <li v-if="isLoggedIn && shouldShowButton('Settings')">
               <a class="text-white hover:text-gray-200" href="/settings">Settings</a>
             </li>
@@ -41,7 +41,7 @@ import { useCookie } from '#imports';
 const props = defineProps({
   showButtons: {
     type: Array as () => string[],
-    default: () => ['Home', 'About', 'Posts', 'Settings', 'Login', 'Logout']
+    default: () => ['Home', 'Publish', 'Posts', 'Settings', 'Login', 'Logout']
   }
 });
 
