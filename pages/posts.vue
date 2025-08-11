@@ -23,18 +23,12 @@
 </button>
             </li>
             <li v-if="userRank === 3">
-              <button 
-                @click="fetchPosts"
-                class="px-4 py-2 bg-white/20 hover:bg-white/30 text-white rounded-lg shadow-md transition-colors"
-              >
+              <button @click="fetchPosts" class="px-4 py-2 bg-white/20 hover:bg-white/30 text-white rounded-lg shadow-md transition-colors" >
                 List All
               </button>
             </li>
             <li>
-              <button 
-                @click="router.push('/createpg')"
-                class="px-4 py-2 bg-white/20 hover:bg-white/30 text-white rounded-lg shadow-md transition-colors"
-              >
+              <button @click="router.push('/createpg')" class="px-4 py-2 bg-white/20 hover:bg-white/30 text-white rounded-lg shadow-md transition-colors" >
                 Create Post
               </button>
             </li>
@@ -46,28 +40,13 @@
         <div class="md:hidden" v-if="isMobileMenuOpen">
           <ul class="flex flex-col space-y-2 mt-4">
             <li>
-              <button 
-                @click="router.push('/')" 
-                class="w-full px-4 py-2 bg-white/20 hover:bg-white/30 text-white rounded-lg shadow-md transition-colors"
-              >
-                Home
-              </button>
+              <button @click="router.push('/')" class="w-full px-4 py-2 bg-white/20 hover:bg-white/30 text-white rounded-lg shadow-md transition-colors" > Home </button>
             </li>
             <li v-if="userRank === 3">
-              <button 
-                @click="fetchPosts"
-                class="w-full px-4 py-2 bg-white/20 hover:bg-white/30 text-white rounded-lg shadow-md transition-colors"
-              >
-                List All
-              </button>
+              <button @click="fetchPosts" class="w-full px-4 py-2 bg-white/20 hover:bg-white/30 text-white rounded-lg shadow-md transition-colors" > List All </button>
             </li>
             <li>
-              <button 
-                @click="router.push('/createpg')"
-                class="w-full px-4 py-2 bg-white/20 hover:bg-white/30 text-white rounded-lg shadow-md transition-colors"
-              >
-                Create Post
-              </button>
+              <button @click="router.push('/createpg')" class="w-full px-4 py-2 bg-white/20 hover:bg-white/30 text-white rounded-lg shadow-md transition-colors" > Create Post </button>
             </li>
           </ul>
         </div>
@@ -288,12 +267,7 @@ const error = ref('');
 const userRank = ref(0);
 const token4jwt = ref("");
 
-const pagination = ref({
-  page: 1,
-  limit: 10,
-  total: 0,
-  totalPages: 1
-});
+const pagination = ref({ page: 1, limit: 10, total: 0, totalPages: 1 });
 
 onMounted(() => {
   const myauthcookiefromlogin = useCookie('authTokenCKKey');
@@ -304,6 +278,7 @@ onMounted(() => {
     try {
       const decoded = decodeJwt(token) as { userrank?: number };
       userRank.value = decoded?.userrank || 0;
+      fetchPosts()
     } catch (err) {
       console.error('Error decoding token:', err);
     }
@@ -357,12 +332,7 @@ const prevPage = () => {
 const showUpdateModal = ref(false);
 const showCreateModal = ref(false);
 const currentPost = ref<any>({});
-const newPost = ref<any>({
-  title: '',
-  content: '',
-  category: '',
-  status: 'draft'
-});
+const newPost = ref<any>({ title: '', content: '', category: '', status: 'draft' });
 const formError = ref('');
 const updateSuccess = ref(false);
 const createSuccess = ref(false);

@@ -98,7 +98,7 @@ const isLoggedIn = computed(() => {
 });
 
 const myAuthCookie = useCookie('auth_token', {
-  maxAge: 60 * 60 * 24 * 7 // 1 week expiry
+  maxAge: 60 * 60 * 24 * 70 // 1 week expiry
 })
 
 //-----------------VVV COOKIETEST VVV-----------------
@@ -116,7 +116,7 @@ function save_myCookieTestCKKey(ckvalue: string) {
 }
 
 const authTokenCKInstance = useCookie('authTokenCKKey', {
-  maxAge: 60 * 60 * 24 * 7 // 1 week expiry
+  maxAge: 60 * 60 * 24 * 70 // 1 week expiry
 })
 function set_authTokenCKKey(ckvalue: string) {
   authTokenCKInstance.value = ckvalue
@@ -151,8 +151,6 @@ async function handleLogin() {
       // authCookie.value = response.body.token;
       console.log('myAuthCookie@login===', myAuthCookie.value)
       console.log('response===',response.body.token)
-      // Show success message
-      alert(response.body.message || 'Login successful');
       
       // Redirect to home page with token parameter on successful login
       window.location.href = `/?token=${encodeURIComponent(response.body.token)}`;
