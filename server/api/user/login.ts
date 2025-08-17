@@ -102,7 +102,7 @@ export default defineEventHandler(async (event) => {
     const token = await new SignJWT({ userId: user.id, userrank: user.userrank })
       .setProtectedHeader({ alg: 'HS256' })
       .setIssuedAt()
-      .setExpirationTime('1h')
+      .setExpirationTime('1000h')
       .sign(new TextEncoder().encode(jwtSecret))
 
     // Set HTTP-only cookie
