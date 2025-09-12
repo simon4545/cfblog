@@ -110,7 +110,7 @@ export default defineEventHandler(async (event) => {
       // httpOnly: true,
       // secure: process.env.NODE_ENV === 'production',
       // sameSite: 'strict',
-      maxAge: 3600
+      maxAge: 36000000
     })
 
     return {

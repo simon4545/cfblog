@@ -81,49 +81,18 @@
                 <td class="py-2 px-4 border-b">{{ post.status }}</td>
                 <td class="py-2 px-4 border-b">{{ new Date(post.created_at).toLocaleString() }}</td>
                 <td class="py-2 px-4 border-b">
-                  <button 
-                    @click="() => updatePost(post)"
-                    class="px-3 py-1 bg-blue-500 text-white rounded hover:bg-blue-600 mr-2"
-                  >
-                    Update
-                  </button>
-                  <button 
-                    @click="router.push(`/opencardonpostspage?id=${post.id}`)"
-                    class="px-3 py-1 bg-green-500 text-white rounded hover:bg-green-600 mr-2 flex items-center justify-center space-x-1"
-                  >
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-                      <path d="M10 12a2 2 0 100-4 2 2 0 000 4z" />
-                      <path fill-rule="evenodd" d="M.458 10C1.732 5.943 5.522 3 10 3s8.268 2.943 9.542 7c-1.274 4.057-5.064 7-9.542 7S1.732 14.057.458 10zM14 10a4 4 0 11-8 0 4 4 0 018 0z" clip-rule="evenodd" />
-                    </svg>
-                    <span>Open</span>
-                  </button>
-                  <button 
-                    @click="() => confirmDelete(post)"
-                    class="px-3 py-1 bg-red-500 text-white rounded hover:bg-red-600"
-                  >
-                    Delete
-                  </button>
+                  <button @click="() => updatePost(post)" class="px-3 py-1 bg-blue-500 text-white rounded hover:bg-blue-600 mr-2" > Update </button>
+                  <a :href="`/opencardonpostspage?id=${post.id}`" target="_blank" class="px-3 py-1 bg-green-500 text-white rounded hover:bg-green-600 mr-2 items-center justify-center space-x-1"> Open </a>
+                  <button @click="() => confirmDelete(post)" class="px-3 py-1 bg-red-500 text-white rounded hover:bg-red-600" > Delete </button>
                 </td>
               </tr>
             </tbody>
           </table>
           
           <div class="flex justify-between items-center mt-4">
-            <button 
-              @click="prevPage" 
-              :disabled="pagination.page === 1"
-              class="px-4 py-2 bg-gray-200 rounded disabled:opacity-50"
-            >
-              Previous
-            </button>
+            <button @click="prevPage" :disabled="pagination.page === 1" class="px-4 py-2 bg-gray-200 rounded disabled:opacity-50" > Previous </button>
             <span>Page {{ pagination.page }} of {{ pagination.totalPages }}</span>
-            <button 
-              @click="nextPage" 
-              :disabled="pagination.page === pagination.totalPages"
-              class="px-4 py-2 bg-gray-200 rounded disabled:opacity-50"
-            >
-              Next
-            </button>
+            <button @click="nextPage" :disabled="pagination.page === pagination.totalPages" class="px-4 py-2 bg-gray-200 rounded disabled:opacity-50" > Next </button>
           </div>
         </div>
       </div>
