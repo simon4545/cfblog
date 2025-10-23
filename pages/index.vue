@@ -308,7 +308,7 @@ async function fetchPosts() {
       method: 'GET',
       params: {
         page: currentPage.value,
-        limit: 10
+        limit: 50
       }
     });
     

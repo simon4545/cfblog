@@ -40,7 +40,7 @@ export default defineEventHandler(async (event) => {
     // Get query parameters
     const query = getQuery(event)
     const page = Number(query.page) || 1
-    const limit = Number(query.limit) || 10
+    const limit = Number(query.limit) || 50
     const offset = (page - 1) * limit
 
     // Get D1 database instance

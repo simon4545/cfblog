@@ -236,7 +236,7 @@ const error = ref('');
 const userRank = ref(0);
 const token4jwt = ref("");
 
-const pagination = ref({ page: 1, limit: 10, total: 0, totalPages: 1 });
+const pagination = ref({ page: 1, limit: 50, total: 0, totalPages: 1 });
 
 onMounted(() => {
   const myauthcookiefromlogin = useCookie('authTokenCKKey');
