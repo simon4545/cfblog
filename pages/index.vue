@@ -144,21 +144,15 @@
     </nav>
 
     <main class="container mx-auto px-4 mt-6 flex-grow">
-      <header class="text-center py-16 bg-blue-50">
-        <h1 class="text-4xl font-light text-gray-800">{{ runtimeConfig.public.HERO_TITLE || 'Welcome to My Tech Blog!' }}</h1>
-        <p class="text-xl font-light mt-2 text-gray-700">{{ runtimeConfig.public.HERO_CONTENT || 'Exploring the latest in technology, development, and more.' }}</p>
-      </header>
-
-      <section class="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-8">
-        <div class="md:col-span-2">
-          <h2 class="text-2xl font-semibold mb-4">Latest Posts</h2>
-          <div v-if="loading" class="text-center py-8">
-            <p>Loading posts ...</p>
-          </div>
-          <div v-else-if="error" class="text-center py-8 text-red-500">
-            <p>Error loading posts: {{ error }}</p>
-          </div>
-          <template v-else>
+      <section>
+        <div v-if="loading" class="text-center py-8">
+          <p>Loading posts ...</p>
+        </div>
+        <div v-else-if="error" class="text-center py-8 text-red-500">
+          <p>Error loading posts: {{ error }}</p>
+        </div>
+        <template v-else>
+          <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
             <BlogPostCard 
               v-for="post in posts"
               :key="post.id"
@@ -169,50 +163,33 @@
               :created-at="post.created_at"
               :status="post.status"
               :category="post.category"
+              :is-admin="userRank === 3"
+              @delete="handleDeletePost"
             />
+          </div>
+          
+          <div class="flex flex-wrap justify-center mt-8 space-x-2">
+            <button 
+              @click="goToPage(currentPage - 1)"
+              :disabled="currentPage <= 1"
+              class="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 disabled:bg-gray-300 disabled:cursor-not-allowed"
+            >
+              Previous
+            </button>
             
-            <div class="flex flex-wrap justify-center mt-8 space-x-2">
-              <button 
-                @click="goToPage(currentPage - 1)"
-                :disabled="currentPage <= 1"
-                class="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 disabled:bg-gray-300 disabled:cursor-not-allowed"
-              >
-                Previous
-              </button>
-              
-              <span class="px-4 py-2">
-                Page {{ currentPage }} of {{ totalPages }}
-              </span>
-              
-              <button 
-                @click="goToPage(currentPage + 1)"
-                :disabled="currentPage >= totalPages"
-                class="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 disabled:bg-gray-300 disabled:cursor-not-allowed"
-              >
-                Next
-              </button>
-            </div>
-          </template>
-        </div>
-        <aside>
-          <!-- <h3 class="text-xl font-semibold mb-3">Categories</h3>
-          <ul class="list-none p-0 mb-6">
-            <li class="mb-1"><a href="#" class="text-blue-600 hover:text-blue-800">Web Development</a></li>
-            <li class="mb-1"><a href="#" class="text-blue-600 hover:text-blue-800">Cloud Computing</a></li>
-            <li class="mb-1"><a href="#" class="text-blue-600 hover:text-blue-800">DevOps</a></li>
-            <li class="mb-1"><a href="#" class="text-blue-600 hover:text-blue-800">AI & Machine Learning</a></li>
-          </ul> -->
-          <h3 class="text-xl font-semibold mb-3 mt-6">Selected Useful Links</h3>
-          <ul class="list-none p-0">
-            <!-- <li class="mb-1"><a :href="runtimeConfig.public.LINK1URL || '#null'" class="text-blue-600 hover:text-blue-800">{{ runtimeConfig.public.LINK1LABEL || 'LINK1LABEL'}} </a></li>
-            <li class="mb-1"><a :href="runtimeConfig.public.LINK2URL || '#null'" class="text-blue-600 hover:text-blue-800">{{ runtimeConfig.public.LINK2LABEL || 'LINK2LABEL'}}</a></li>
-            <li class="mb-1"><a :href="runtimeConfig.public.LINK3URL || '#null'" class="text-blue-600 hover:text-blue-800">{{ runtimeConfig.public.LINK3LABEL || 'LINK3LABEL'}}</a></li>
-            <li class="mb-1"><a :href="runtimeConfig.public.LINK4URL || '#null'" class="text-blue-600 hover:text-blue-800">{{ runtimeConfig.public.LINK4LABEL || 'LINK4LABEL'}}</a></li>
-            <li class="mb-1"><a :href="runtimeConfig.public.LINK5URL || '#null'" class="text-blue-600 hover:text-blue-800">{{ runtimeConfig.public.LINK5LABEL || 'LINK5LABEL'}}</a></li> -->
-            <!-- <li class="mb-1"><a href="#" class="text-blue-600 hover:text-blue-800">GitHub</a></li>
-            <li class="mb-1"><a href="#" class="text-blue-600 hover:text-blue-800">GitHub</a></li> -->
-          </ul>
-        </aside>
+            <span class="px-4 py-2">
+              Page {{ currentPage }} of {{ totalPages }}
+            </span>
+            
+            <button 
+              @click="goToPage(currentPage + 1)"
+              :disabled="currentPage >= totalPages"
+              class="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 disabled:bg-gray-300 disabled:cursor-not-allowed"
+            >
+              Next
+            </button>
+          </div>
+        </template>
       </section>
     </main>
 
@@ -230,6 +207,7 @@ import BlogPostCard from '~/components/BlogPostCard.vue';
 const isMobileMenuOpen = ref(false);
 
 const isLoggedIn = ref(false);
+const userRank = ref(0);
 const cookitToken = ref("");
 const router = useRouter();
 
@@ -264,6 +242,7 @@ async function verifyToken(token: string) {
   // console.log('Token@verifyToken@index======:', token);
   if (!token) {
     isLoggedIn.value = false;
+    userRank.value = 0;
     return;
   }
 
@@ -276,8 +255,10 @@ async function verifyToken(token: string) {
     });
     
     isLoggedIn.value = response.body.valid;
+    userRank.value = response.body.userrank || 0;
   } catch (error) {
     isLoggedIn.value = false;
+    userRank.value = 0;
   }
 }
 
@@ -329,6 +310,19 @@ function goToPage(page: number) {
   if (page >= 1 && page <= totalPages.value) {
     currentPage.value = page;
     fetchPosts();
+  }
+}
+
+async function handleDeletePost(postId: number) {
+  try {
+    await $fetch('/api/postbpi/delete', {
+      method: 'POST',
+      body: { postId }
+    });
+    // Refresh the post list after deletion
+    await fetchPosts();
+  } catch (err: any) {
+    alert(err.data?.message || err.message || 'Failed to delete post');
   }
 }
 </script>

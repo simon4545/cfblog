@@ -2,7 +2,7 @@
  * @api {get} /api/postbpi/search Search posts with full-text search
  *
  * Example Request (Postman):
- * GET /api/postbpi/search?q=cloudflare&page=1&limit=5
+ * GET /api/postbpi/search?q=cloudflare&page=1&limit=10
  *
  * Query Parameters:
  * - q: Search query/keywords (required)
@@ -22,22 +22,13 @@
  *         "status": "published",
  *         "author_id": 1,
  *         "created_at": "2023-01-01T00:00:00.000Z"
- *       },
- *       {
- *         "id": 2,
- *         "title": "Cloudflare D1 Database Guide",
- *         "content": "How to use D1 SQL database with Workers...",
- *         "category": "Technology",
- *         "status": "published",
- *         "author_id": 1,
- *         "created_at": "2023-01-02T00:00:00.000Z"
  *       }
  *     ],
  *     "pagination": {
  *       "total": 15,
  *       "page": 1,
- *       "limit": 5,
- *       "totalPages": 3
+ *       "limit": 10,
+ *       "totalPages": 2
  *     }
  *   }
  * }
@@ -46,8 +37,6 @@
  * - 400: Missing search query
  * - 500: Server error
  */
-
-import { H3Event } from 'h3'
 
 export default defineEventHandler(async (event) => {
   try {
@@ -69,31 +58,31 @@ export default defineEventHandler(async (event) => {
     // Get D1 database instance
     const db = event.context.cloudflare.env.DB
 
+    const likePattern = `%${searchQuery}%`
+
     // Get total count of matching published posts
     const totalResult = await db
       .prepare(`
         SELECT COUNT(*) as total 
-        FROM posttb p
-        JOIN posttb_fts fts ON p.id = fts.rowid
-        WHERE posttb_fts MATCH ? AND p.status = ?
+        FROM posttb
+        WHERE (title LIKE ? OR content LIKE ?) AND status = ?
       `)
-      .bind(searchQuery, 'published')
+      .bind(likePattern, likePattern, 'published')
       .first<{ total: number }>()
     
     const total = totalResult?.total || 0
     const totalPages = Math.ceil(total / limit)
 
-    // Get paginated search results with improved FTS5 query syntax
+    // Get paginated search results
     const posts = await db
       .prepare(`
-        SELECT p.id, p.title, p.content, p.category, p.author_id, p.created_at, p.status 
-        FROM posttb p
-        JOIN posttb_fts fts ON p.id = fts.rowid
-        WHERE posttb_fts MATCH ? AND p.status = ?
-        ORDER BY bm25(posttb_fts) ASC, p.created_at DESC
+        SELECT id, title, content, category, author_id, created_at, status 
+        FROM posttb
+        WHERE (title LIKE ? OR content LIKE ?) AND status = ?
+        ORDER BY created_at DESC
         LIMIT ? OFFSET ?
       `)
-      .bind(`"${searchQuery}" OR ${searchQuery}*`, 'published', limit, offset)
+      .bind(likePattern, likePattern, 'published', limit, offset)
       .all<{ id: number; title: string; content: string; category: string | null; author_id: number; created_at: string; status: string }>()
 
     return {
